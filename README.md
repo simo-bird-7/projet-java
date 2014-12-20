@@ -8,7 +8,7 @@ Résumé
 
 Classes:
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -126,7 +126,7 @@ Classes:
 </tbody>
 </table>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -192,7 +192,7 @@ park(IParticulier) n'a pas besoin d'etre abstraite car on sait que
 quoi qu'il arrive, un vehicule particulier peut se garer sur n'importe
 quel type de place
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -219,7 +219,7 @@ quel type de place
 </tbody>
 </table>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -246,7 +246,7 @@ quel type de place
 </tbody>
 </table>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -279,7 +279,7 @@ quel type de place
 </tbody>
 </table>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -304,7 +304,7 @@ quel type de place
 </tbody>
 </table>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -330,7 +330,7 @@ quel type de place
 </tbody>
 </table>
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -358,7 +358,7 @@ quel type de place
 
 Interfaces:
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table  cellspacing="0" cellpadding="6" >
 
 
 <colgroup>
@@ -382,24 +382,3 @@ Interfaces:
 
 On verra plus tard pour l'interface graphique(swing/AWT) et les factures(serialisable).
 
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col   />
-
-<col   />
-</colgroup>
-<tbody>
-<tr>
-<td >a</td>
-<td >b</td>
-</tr>
-
-
-<tr>
-<td >c</td>
-<td >d</td>
-</tr>
-</tbody>
-</table>
