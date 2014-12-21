@@ -3,8 +3,62 @@
 Projet de Java - Gestion de parking
 =================================
 
+Compiler
+--------
+
+Pour compiler, vous avez besoin de Maven.
+
+`mvn package`
+
+dans un terminal dans le répertoire source du projet.
+Vous pouvez convertir le projet en projet eclipse avec
+
+`mvn eclipse:eclipse`
+
+Importez alors dans eclipse (Projet existant dans l'espace de travail)
+Vous avez besoin de paramétrer une variable M2_REPO de build pour les dépendances (JUnit)
+
+Allez dans la barre de menu, Window > Preferences
+Dans la barre de coté. Java > Build Path > Classpath Variables.
+Faite New.
+Creer une variable qui s'appelle M2_REPO.
+Donnez lui pour valeur le chemin des repo de maven.
+Sous linux, il y a un dossier caché .m2 dans votre home et dedans il y a un dossier repository.
+Donc un exemple de valeur correcte serai `/home/[user]/.m2/repository`
+Aucune idée de la valeur correcte sous windows, je sais juste que le nom du repertoire est aussi repository.
+
+Enfin, comme dirait Nedjar : `Un développeur n'ayant pas un Unix sur sa machine ne peut pas être raisonnablement considéré comme un vrai développeur.`
+Vous pouvez alors ouvrir la classe qui contient le main et lancer le programme.
+
+Contribuer
+----------
+
+Lors de vos commits, ne commitez que les fichiers que vous modifiez, les .java, pas de .class ou autre merdes d'eclipse.
+
+Vous n'avez pas les droits d'acces sur ce repot, vous les obtiendrez quand vous vous montrerez a peu pres capable d'utiliser git.
+
+Contentez vous de fork ce repot (le bouton en haut), et de faire un `git clone [url de votre fork]` dans un terminal
+
+Vous aurez alors un dossier projet-java dans le dossier ou vous avez effectuer la commande.
+Vous pouvez taper votre code, cool.
+Configurez votre git
+`git config --global user.name [username de github]`
+`git config --global user.email [email de github]`
+Quand vous avez fini, vous allez commit votre code.
+`git add [fichiers modifiés]`
+`git commit -m ["Description des modification apportées"]`
+`git push`
+Entrez votre mot de passe et votre code est sur votre fork.
+Ensuite allez sur github et appuyez sur le bouton vers, pour faire une "pull request" (PR)
+Une pull request est une demande a ce que votre code soit incorporé (merge) dans la base existante.
+
+L'avantage, c'est que on peut eviter que du code non-fonctionnel se retrouve dans le repo principal.
+Lorsque vous ferez votre pull request, vous verrez des icones qui indique un status, c'est Travis qui fait sont boulot.
+Il compile et lance les test unitaire sur le code qui resultera du merge, pour confirmer que le code est fonctionnel.
+Vous pouvez voir en haut de ce readme une petite image qui montre l'etat du build.
+
 Résumé
----
+------
 
 Classes:
 
