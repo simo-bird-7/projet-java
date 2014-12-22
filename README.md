@@ -10,7 +10,7 @@ Pour compiler, vous avez besoin de Maven.
 
 `mvn package`
 
-dans un terminal dans le répertoire source du projet.
+dans un terminal dans le répertoire source du projet.Puis vous pouvez executer le programme en allant dans le dossier target/classes et taper la commande `java parking.business.App`
 Vous pouvez convertir le projet en projet eclipse avec
 
 `mvn eclipse:eclipse`
@@ -56,6 +56,9 @@ L'avantage, c'est que on peut eviter que du code non-fonctionnel se retrouve dan
 Lorsque vous ferez votre pull request, vous verrez des icones qui indique un status, c'est Travis qui fait sont boulot.
 Il compile et lance les test unitaire sur le code qui resultera du merge, pour confirmer que le code est fonctionnel.
 Vous pouvez voir en haut de ce readme une petite image qui montre l'etat du build.
+
+
+*Note:* Le java permet les nom de variable et de classe accentué, genre Véhicule.
 
 Résumé
 ------

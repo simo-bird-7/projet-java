@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.iut.java</groupId>
+  <groupId>parking.business</groupId>
   <artifactId>projet</artifactId>
   <version>0.1b</version>
   <packaging>jar</packaging>
@@ -22,7 +22,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>com.iut.java.App</mainClass>
+              <mainClass>parking.business.App</mainClass>
             </manifest>
           </archive>
         </configuration>
