@@ -1,11 +1,12 @@
 package parking.business;
 
 public abstract class Place {
+	
+	Vehicule vehicule = null; // le vehicule garé à cette place
 
 	public boolean isFree()
 	{
-		return true;
-		// TODO Auto-generated method stub
+		return (vehicule == null);
 	}
 	
 	public abstract void park(Vehicule v);
