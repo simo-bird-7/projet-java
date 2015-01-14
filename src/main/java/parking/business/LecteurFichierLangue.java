@@ -1,4 +1,4 @@
-package com.iut.java;
+package parking.business;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import parking.exception.*;
 
 public class LecteurFichierLangue {
 		String etat;

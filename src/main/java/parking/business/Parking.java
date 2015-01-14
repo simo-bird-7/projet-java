@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import parking.exception.*;
+
 public class Parking
 {
 	private static Parking instance;
@@ -23,7 +25,7 @@ public class Parking
 		return  places.contains(v);
 	}
 	
-	public void park (Vehicule v) throws PlaceOccuppeeException
+	public void park (Vehicule v) throws PlaceOccupeeException
 	{
 		for(Place place : places)
 		{
@@ -31,15 +33,15 @@ public class Parking
 				place.park(v);
 				return;
 		}
-		throw new PlaceOccuppeeException();
+		throw new PlaceOccupeeException();
 	}
 
-	public void park(Vehicule v, int place) throws PlaceOccuppeeException
+	public void park(Vehicule v, int place) throws PlaceOccupeeException
 	{
 		if(places.get(place).isFree())
 			places.get(place).park(v);
 		else
-			throw new PlaceOccuppeeException();
+			throw new PlaceOccupeeException();
 			
 	}
 
@@ -48,7 +50,7 @@ public class Parking
 		Vehicule v = places.get(place).getParkedVehicule();
 		if(v == null)
 			throw new PlaceLibreException();
-		places.get(place).libere();
+		places.get(place).liberer();
 		return v;
 	}
 	
@@ -80,10 +82,10 @@ public class Parking
 		}
 	}
 
-	public Place bookPlace()
+	public Place bookPlace() throws PlusAucunePlaceException
 	{
 		for(Place place : places)
-			if(!place.isReserve() && place.isFree())
+			if(place.isFree())
 			{
 				place.reserver();
 				return place;
@@ -91,14 +93,14 @@ public class Parking
 		throw new PlusAucunePlaceException();
 	}
 
-	public Place bookPlace(int emplacement)
+	public Place bookPlace(int emplacement) throws PlusAucunePlaceException
 	{
 		if(!places.get(emplacement).isReserve() && places.get(emplacement).isFree())
 			return places.get(emplacement);
 		throw new PlusAucunePlaceException();
 	}
 
-	public void freePlace(int i)
+	public void freePlace(int i) throws PlaceDisponibleException
 	{
 		if (!places.get(i).isReserve())
 			throw new PlaceDisponibleException();
@@ -109,7 +111,7 @@ public class Parking
 	public int getLocation(String immat)
 	{
 		for (int i = 0 ; i < places.size() -1; ++i)
-			if(!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmat() == immat)
+			if(!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmatriculation() == immat)
 				return i;
 		return -1;
 	}
@@ -119,7 +121,7 @@ public class Parking
 		try 
 		{
 			for (int i = 0 ; i < places.size() -1; ++i)
-				if(!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmat() == immat)
+				if(!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmatriculation() == immat)
 					return unpark(i);
 		}
 		catch (PlaceLibreException e)
@@ -129,13 +131,13 @@ public class Parking
 		return null;
 	}
 	
-	public void reorganiserPlace()
+	public void reorganiserPlace() throws PlaceLibreException, PlaceOccupeeException
 	{
 		for(int i = 0;i < places.size(); ++i)
 		{
 			if (places.get(i).isTransporteur() && !places.get(i).getParkedVehicule().isTransporteur())
 				for(int j = 0; j < places.size(); ++j)
-					if(!places.get(i).isTransporteur && places.get(j).isFree())
+					if(!places.get(i).isTransporteur() && places.get(j).isFree())
 						park(unpark(i), j);
 		}
 	}

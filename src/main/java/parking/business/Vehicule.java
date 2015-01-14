@@ -16,19 +16,23 @@ public abstract class Vehicule {
 	
 	public abstract boolean isTransporteur();
 	
-	public String getImmatriculation() {
+	public String getImmatriculation()
+	{
 		return immatriculation;
 	}
 	
-	public String getModele(){
+	public String getModele()
+	{
 		return modele;
 	}
 	
-	public String getMarque(){
+	public String getMarque()
+	{
 		return marque;
 	}
 	
-	public String getProprietaire(){
+	public String getProprietaire()
+	{
 		return proprietaire;
 	}
 
