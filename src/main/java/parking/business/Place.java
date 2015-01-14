@@ -1,26 +1,46 @@
 package parking.business;
 
+import parking.exception.PlaceOccupeeException;
+import parking.exception.PlusAucunePlaceException;
+
 public abstract class Place {
 	
-	Vehicule vehicule = null; // le vehicule garé à cette place
+	int numero;
+	static int nbInstance;
+	boolean reserve = false; 
+	
+	protected Vehicule vehicule = null; // le vehicule garé à cette place
 
+	public Place(){
+		numero = nbInstance;
+		nbInstance++;
+	}
+	
 	public boolean isFree()
 	{
 		return (vehicule == null);
 	}
 	
-	public abstract void park(Vehicule v);
+	public boolean isReserve(){
+		return reserve;
+	}
+	
+	public Vehicule getParkedVehicule() {
+		return vehicule;
+	}
 	
 	public void libere() {
-		// TODO Auto-generated method stub
-		
+		vehicule = null;
 	}
-	public Vehicule getParkedVehicule() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void reserver() throws PlusAucunePlaceException {
+		if (reserve == true){
+			throw(new PlusAucunePlaceException());
+		}
+		else{
+			reserve = true;
+		}
 	}
-	public boolean reserve() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
+	public abstract void park(Vehicule v) throws PlaceOccupeeException;
 }
