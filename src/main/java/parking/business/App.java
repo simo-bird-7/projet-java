@@ -1,4 +1,4 @@
-package com.iut.java;
+package parking.business;
 
 /**
  * Hello world!
