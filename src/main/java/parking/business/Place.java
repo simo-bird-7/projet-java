@@ -18,7 +18,7 @@ public abstract class Place {
 	
 	public boolean isFree()
 	{
-		return (vehicule == null);
+		return !isReserve() && vehicule == null;
 	}
 	
 	public boolean isReserve(){
@@ -29,7 +29,7 @@ public abstract class Place {
 		return vehicule;
 	}
 	
-	public void libere() {
+	public void liberer() {
 		vehicule = null;
 	}
 	
