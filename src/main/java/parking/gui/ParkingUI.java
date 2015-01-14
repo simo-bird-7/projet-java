@@ -30,7 +30,7 @@ public class ParkingUI
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Projet window = new Projet();
+					ParkingUI window = new ParkingUI();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +42,7 @@ public class ParkingUI
 	/**
 	 * Create the application.
 	 */
-	public Projet() {
+	public ParkingUI() {
 		initialize();
 	}
 
@@ -58,6 +58,7 @@ public class ParkingUI
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		
 		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
 		toolBar.setOrientation(SwingConstants.VERTICAL);
 		toolBar.setBounds(0, 0, 85, 453);
 		desktopPane.add(toolBar);
