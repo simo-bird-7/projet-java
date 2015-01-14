@@ -1,13 +1,15 @@
 package parking.business;
 
+import parking.exception.PlaceOccupeeException;
 import parking.exception.PlusAucunePlaceException;
 
 public abstract class Place {
 	
 	int numero;
 	static int nbInstance;
-	Vehicule vehicule = null; // le vehicule garé à cette place
 	boolean reserve = false; 
+	
+	protected Vehicule vehicule = null; // le vehicule garé à cette place
 
 	public Place(){
 		numero = nbInstance;
@@ -19,18 +21,16 @@ public abstract class Place {
 		return (vehicule == null);
 	}
 	
-	public abstract void park(Vehicule v);
-	
-	public void libere() {
-		vehicule = null;
+	public boolean isReserve(){
+		return reserve;
 	}
 	
 	public Vehicule getParkedVehicule() {
 		return vehicule;
 	}
 	
-	public boolean reserve(){
-		return reserve;
+	public void libere() {
+		vehicule = null;
 	}
 	
 	public void reserver() throws PlusAucunePlaceException {
@@ -41,4 +41,6 @@ public abstract class Place {
 			reserve = true;
 		}
 	}
+	
+	public abstract void park(Vehicule v) throws PlaceOccupeeException;
 }
