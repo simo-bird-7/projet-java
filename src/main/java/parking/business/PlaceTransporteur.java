@@ -1,6 +1,7 @@
 package parking.business;
 
-public class PlaceTransporteur extends Place {
+public class PlaceTransporteur extends Place
+{
 
 	@Override
 	public void park(Vehicule v)

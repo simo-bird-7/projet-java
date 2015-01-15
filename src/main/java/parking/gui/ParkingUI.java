@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class ParkingUI
 {
@@ -120,18 +121,23 @@ public class ParkingUI
 		JMenuBar menuBar = new JMenuBar();
 		frame.getContentPane().add(menuBar, BorderLayout.NORTH);
 		
+		JMenu mnFichier = new JMenu("Fichier");
+		menuBar.add(mnFichier);
+		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Afficher");
+		mnFichier.add(mntmNewMenuItem);
 		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.LEFT);
-		menuBar.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Imprimer");
+		mnFichier.add(mntmNewMenuItem_1);
 		mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.LEFT);
-		menuBar.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Documentation");
-		menuBar.add(mntmNewMenuItem_2);
+		mnFichier.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("A propos");
-		menuBar.add(mntmNewMenuItem_3);
+		mnFichier.add(mntmNewMenuItem_3);
+		
+		frame.setLocationRelativeTo(null);
 	}
 }
