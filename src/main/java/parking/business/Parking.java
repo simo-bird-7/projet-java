@@ -2,6 +2,7 @@ package parking.business;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Observer;
 import java.util.Stack;
 
 import parking.exception.*;
+import parking.gui.PlaceButton;
 
 public class Parking
 {
@@ -17,7 +19,7 @@ public class Parking
 	// A modifier pour changer la langue (Doit fournir le fichier *Langue*.txt
 	private String langue = "Francais";
 
-	public Parking getInstance()
+	public static Parking getInstance()
 	{
 		if (instance == null) instance = new Parking();
 		return instance;
@@ -25,10 +27,11 @@ public class Parking
 
 	protected Parking()
 	{
-		places = Collections.nCopies(Constante.nbPlaceParticulier,
-				new PlaceParticulier());
-		places.addAll(Collections.nCopies(Constante.nbPlaceTranporteur,
-				new PlaceTransporteur()));
+		places = new ArrayList<Place>();
+		for(int i = 0; i < Constante.nbPlaceParticulier; ++i)
+			places.add(new PlaceParticulier());
+		for(int i = 0; i < Constante.nbPlaceTranporteur; ++i)
+			places.add(new PlaceTransporteur());
 	}
 
 	public boolean vehiculeExiste(Vehicule v)
@@ -39,14 +42,19 @@ public class Parking
 	public void park(Vehicule v) throws PlaceOccupeeException
 	{
 		for (Place place : places)
+		{
 			try
 			{
 				place.park(v);
 				return;
 			}
 			catch (PlaceOccupeeException poe)
-			{// On essaye de garer la voiture partout.
+			{
+				if(place.isTransporteur())
+					System.out.println("TR");
 			}
+		}
+		System.out.println("BITTETWRTI");
 		throw new PlaceOccupeeException();
 	}
 
@@ -57,7 +65,7 @@ public class Parking
 
 	public void park(Vehicule v, Place place) throws PlaceOccupeeException
 	{
-		if (!place.isReserve() && place.isFree()) place.park(v);
+		if (!place.isReserve(v.getImmatriculation()) && place.isFree()) place.park(v);
 		else throw new PlaceOccupeeException();
 	}
 
@@ -65,7 +73,7 @@ public class Parking
 	{
 		Vehicule v = p.getParkedVehicule();
 		if (v == null) throw new PlaceLibreException();
-		p.liberer();
+		p.retirer();
 		reorganiserPlace();
 		return v;
 	}
@@ -102,25 +110,29 @@ public class Parking
 		}
 	}
 
-	public Place bookPlace() throws PlusAucunePlaceException
+	public Place bookPlace(Vehicule v) throws PlusAucunePlaceException
 	{
 		for (Place place : places)
 			if (!place.isReserve() && place.isFree())
 			{
-				place.reserver();
+				place.reserver(v.immatriculation);
 				return place;
 			}
 		throw new PlusAucunePlaceException();
 	}
 
-	public Place bookPlace(int emplacement) throws PlusAucunePlaceException
+	public Place bookPlace(Vehicule v, int emplacement) throws PlusAucunePlaceException
 	{
-		return bookPlace(places.get(emplacement));
+		return bookPlace(v, places.get(emplacement));
 	}
 
-	public Place bookPlace(Place p) throws PlusAucunePlaceException
+	public Place bookPlace(Vehicule v, Place p) throws PlusAucunePlaceException
 	{
-		if (!p.isReserve() && p.isFree()) return p;
+		if (!p.isReserve() && p.isFree())
+		{
+			p.reserver(v.getImmatriculation());
+			return p;
+		}
 		throw new PlusAucunePlaceException();
 	}
 
@@ -166,16 +178,20 @@ public class Parking
 		for (Place p : places.subList(Constante.nbPlaceParticulier,
 				Constante.nbPlaceParticulier + Constante.nbPlaceTranporteur))
 			if (!p.isFree() && !p.getParkedVehicule().isTransporteur()) park(
-					unpark(p), placesLibres.pop());
+					unpark(places.get(p.getNumero())), placesLibres.pop());
 	}
 	
-	public void observePlaces(List<Observer> observer) throws PasAssezDObservateurException
+	public void observePlaces(List<? extends Observer> observer) throws PasAssezDObservateurException
 	{
 		if(observer.size() != places.size()) throw new PasAssezDObservateurException();
 		Iterator<Place> placeIt = places.iterator();
-		Iterator<Observer> obsIt = observer.iterator();
-
+		Iterator<? extends Observer> obsIt = observer.iterator();
 		while(placeIt.hasNext() && obsIt.hasNext())
-			placeIt.next().addObserver(obsIt.next());
+		{
+			Place p = placeIt.next();
+			PlaceButton pb = (PlaceButton) obsIt.next();
+			pb.setPlace(p);
+			p.addObserver(pb);
+		}
 	}
 }
