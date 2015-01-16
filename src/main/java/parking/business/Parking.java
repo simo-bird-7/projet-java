@@ -3,7 +3,9 @@ package parking.business;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Observer;
 import java.util.Stack;
 
 import parking.exception.*;
@@ -59,15 +61,16 @@ public class Parking
 		else throw new PlaceOccupeeException();
 	}
 
-	public Vehicule unpark(Place p) throws PlaceLibreException
+	public Vehicule unpark(Place p) throws PlaceLibreException, PlaceOccupeeException
 	{
 		Vehicule v = p.getParkedVehicule();
 		if (v == null) throw new PlaceLibreException();
 		p.liberer();
+		reorganiserPlace();
 		return v;
 	}
 
-	public Vehicule unpark(int place) throws PlaceLibreException
+	public Vehicule unpark(int place) throws PlaceLibreException, PlaceOccupeeException
 	{
 		return unpark(places.get(place));
 	}
@@ -140,14 +143,13 @@ public class Parking
 		return -1;
 	}
 
-	public Vehicule retirerVehicule(String immat)
+	public Vehicule retirerVehicule(String immat) throws PlaceOccupeeException
 	{
 		try
 		{
 			for (int i = 0; i < places.size() - 1; ++i)
-				if (!(places.get(i).isFree())
-						&& places.get(i).getParkedVehicule()
-								.getImmatriculation() == immat) return unpark(i);
+				if (!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmatriculation() == immat)
+					return unpark(i);
 		}
 		catch (PlaceLibreException e)
 		{
@@ -156,8 +158,7 @@ public class Parking
 		return null;
 	}
 
-	public void reorganiserPlace() throws PlaceLibreException,
-			PlaceOccupeeException
+	protected void reorganiserPlace() throws PlaceLibreException, PlaceOccupeeException
 	{
 		Stack<Place> placesLibres = new Stack<Place>();
 		for (Place p : places.subList(0, Constante.nbPlaceParticulier))
@@ -166,5 +167,15 @@ public class Parking
 				Constante.nbPlaceParticulier + Constante.nbPlaceTranporteur))
 			if (!p.isFree() && !p.getParkedVehicule().isTransporteur()) park(
 					unpark(p), placesLibres.pop());
+	}
+	
+	public void observePlaces(List<Observer> observer) throws PasAssezDObservateurException
+	{
+		if(observer.size() != places.size()) throw new PasAssezDObservateurException();
+		Iterator<Place> placeIt = places.iterator();
+		Iterator<Observer> obsIt = observer.iterator();
+
+		while(placeIt.hasNext() && obsIt.hasNext())
+			placeIt.next().addObserver(obsIt.next());
 	}
 }

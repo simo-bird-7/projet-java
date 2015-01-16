@@ -3,7 +3,7 @@ package parking.business;
 import parking.exception.PlaceOccupeeException;
 import parking.exception.PlusAucunePlaceException;
 
-public abstract class Place
+public abstract class Place extends java.util.Observable
 {
 	static int nbInstance;
 
@@ -36,12 +36,14 @@ public abstract class Place
 	public void liberer()
 	{
 		vehicule = null;
+		notifyObservers();
 	}
 
 	public void reserver() throws PlusAucunePlaceException
 	{
 		if (reserve) throw (new PlusAucunePlaceException());
 		else reserve = true;
+		notifyObservers();
 	}
 
 	public abstract boolean isTransporteur();

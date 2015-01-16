@@ -7,6 +7,7 @@ public class PlaceTransporteur extends Place
 	public void park(Vehicule v)
 	{
 		vehicule = v;
+		notifyObservers();
 	}
 
 	@Override

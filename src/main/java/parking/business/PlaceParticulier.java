@@ -10,6 +10,7 @@ public class PlaceParticulier extends Place
 	{
 		if (vehicule.isTransporteur()) throw new PlaceOccupeeException();
 		else vehicule = v;
+		notifyObservers();
 	}
 
 	@Override
