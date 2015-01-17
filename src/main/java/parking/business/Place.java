@@ -69,8 +69,10 @@ public abstract class Place extends java.util.Observable
 
 	public void retirer()
 	{
+		Vehicule tmp = vehicule;
 		vehicule = null;
 		setChanged();
-		notifyObservers();
+		System.out.println("Notification");
+		notifyObservers(tmp);
 	}
 }

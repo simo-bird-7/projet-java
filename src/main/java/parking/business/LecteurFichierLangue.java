@@ -18,7 +18,7 @@ public class LecteurFichierLangue
 	public LecteurFichierLangue(String langue) throws IOException,
 			FileNotFoundException
 	{
-		InputStream ips = new FileInputStream(langue + ".txt");
+		InputStream ips = new FileInputStream("assets/" + langue + ".txt");
 		InputStreamReader ipsr = new InputStreamReader(ips);
 		BufferedReader br = new BufferedReader(ipsr);
 		etat = br.readLine();

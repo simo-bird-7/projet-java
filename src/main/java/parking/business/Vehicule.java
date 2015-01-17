@@ -1,7 +1,10 @@
 package parking.business;
 
-public abstract class Vehicule
+import java.io.Serializable;
+
+public abstract class Vehicule implements Serializable
 {
+	private static final long serialVersionUID = 6908533054919923910L;
 	String immatriculation;
 	String modele;
 	String marque;
@@ -35,5 +38,11 @@ public abstract class Vehicule
 	public String getProprietaire()
 	{
 		return proprietaire;
+	}
+	
+	public String toString()
+	{
+		return getClass().getSimpleName() + " immatriculé " + immatriculation + ", appartenant a " + proprietaire + ", de la marque "  + marque
+				+ ", ayant pour modele " + modele;
 	}
 }

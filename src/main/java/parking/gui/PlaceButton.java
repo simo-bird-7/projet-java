@@ -1,14 +1,18 @@
 package parking.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
@@ -17,6 +21,7 @@ import javax.swing.JPopupMenu;
 
 import parking.business.Parking;
 import parking.business.Place;
+import parking.business.Vehicule;
 import parking.exception.PlaceDisponibleException;
 import parking.exception.PlaceLibreException;
 import parking.exception.PlaceOccupeeException;
@@ -36,13 +41,41 @@ public class PlaceButton extends JButton implements java.util.Observer
 	private Place place;
 	private int numero;
 	private Color c = Color.green;
+	private static final BufferedImage car = loadImage("car");
+	private static final BufferedImage truck = loadImage("truck");
 
 	protected void paintComponent(Graphics g)
 	{
-		g.setColor(c);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		Image bi;
+		if(!place.isFree())
+		{
+			if(!place.getParkedVehicule().isTransporteur())
+				bi = car;
+			else
+				bi = truck;
+		}
+		else
+			bi = null;
+		
+		if(bi != null)
+			g.drawImage(bi, 0, 0, null);
+		g.setColor(Color.black);
+		g.drawString(String.valueOf(numero), 8, 16);
 	}
-	
+
+	private static BufferedImage loadImage(String name)
+	{
+		try
+		{
+			return ImageIO.read(new File("assets/" + name + ".png"));
+		}
+		catch (IOException e)
+		{
+			System.err.println("Couldn't load image");
+		}
+		return null;
+	}
+
 	public Place getPlace()
 	{
 		return place;
@@ -57,7 +90,7 @@ public class PlaceButton extends JButton implements java.util.Observer
 			c = Color.orange;
 		else
 			c = Color.green;
-		repaint();
+		update(null, null);
 	}
 	
 	public PlaceButton()
@@ -161,43 +194,38 @@ public class PlaceButton extends JButton implements java.util.Observer
 			@Override
 			public void mouseEntered(MouseEvent arg0)
 			{
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0)
 			{
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void mousePressed(MouseEvent arg0)
 			{
-				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent arg0)
 			{
-				// TODO Auto-generated method stub
-				
 			}
 		});
+		setOpaque(false);
 	}
 	
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		Place sender = (Place) o;
-		if(!sender.isFree())
+		if(!place.isFree())
 			c = Color.red;
-		else if(sender.isReserve())
+		else if(place.isReserve())
 			c = Color.orange;
 		else
 			c = Color.green;
+		setBorder(BorderFactory.createDashedBorder(c));
+		if(arg != null)
+			new FactureDialog((Vehicule) arg);
 		repaint();
 	}
 }
