@@ -10,6 +10,9 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Observable;
 
 import javax.imageio.ImageIO;
@@ -41,24 +44,18 @@ public class PlaceButton extends JButton implements java.util.Observer
 	private Place place;
 	private int numero;
 	private Color c = Color.green;
-	private static final BufferedImage car = loadImage("car");
-	private static final BufferedImage truck = loadImage("truck");
+	private static Map<String, BufferedImage > loadedImages = new HashMap<String, BufferedImage>();
 
 	protected void paintComponent(Graphics g)
 	{
 		Image bi;
 		if(!place.isFree())
-		{
-			if(!place.getParkedVehicule().isTransporteur())
-				bi = car;
-			else
-				bi = truck;
-		}
+				bi = loadImage(place.getParkedVehicule().getClass().getSimpleName());
 		else
 			bi = null;
 		
 		if(bi != null)
-			g.drawImage(bi, 0, 0, null);
+			g.drawImage(bi, getWidth() / 2 - bi.getWidth(null) / 2, getHeight() / 2 - bi.getHeight(null) / 2, null);
 		g.setColor(Color.black);
 		g.drawString(String.valueOf(numero), 8, 16);
 	}
@@ -67,7 +64,9 @@ public class PlaceButton extends JButton implements java.util.Observer
 	{
 		try
 		{
-			return ImageIO.read(new File("assets/" + name + ".png"));
+			if(!loadedImages.containsKey(name))
+				loadedImages.put(name, ImageIO.read(new File("assets/" + name + ".png")));
+			return loadedImages.get(name);
 		}
 		catch (IOException e)
 		{

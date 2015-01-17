@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddVehicule extends JDialog
 {
@@ -107,6 +109,7 @@ public class AddVehicule extends JDialog
 		final JComboBox comboBox;
 		{
 			comboBox = new JComboBox<String>();
+
 			comboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "Moto",
 					"Voiture", "Camion" }));
 			contentPanel.add(comboBox);
