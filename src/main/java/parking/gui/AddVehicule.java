@@ -104,7 +104,7 @@ public class AddVehicule extends JDialog
 			JLabel lblType = new JLabel("Type de véhicule");
 			contentPanel.add(lblType);
 		}
-		JComboBox comboBox;
+		final JComboBox comboBox;
 		{
 			comboBox = new JComboBox();
 			comboBox.setModel(new DefaultComboBoxModel(new String[] { "Moto",
