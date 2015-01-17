@@ -3,74 +3,102 @@ package parking.business;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Observer;
+import java.util.Stack;
 
 import parking.exception.*;
+import parking.gui.PlaceButton;
 
 public class Parking
 {
 	private static Parking instance;
-	private ArrayList<Place> places;
+	private List<Place> places;
 	// A modifier pour changer la langue (Doit fournir le fichier *Langue*.txt
 	private String langue = "Francais";
-	
-	public Parking getInstance()
+
+	public static Parking getInstance()
 	{
-		if (instance == null)
-			instance = new Parking();
+		if (instance == null) instance = new Parking();
 		return instance;
 	}
-	
+
+	protected Parking()
+	{
+		places = new ArrayList<Place>();
+		for(int i = 0; i < Constante.nbPlaceParticulier; ++i)
+			places.add(new PlaceParticulier());
+		for(int i = 0; i < Constante.nbPlaceTranporteur; ++i)
+			places.add(new PlaceTransporteur());
+	}
+
 	public boolean vehiculeExiste(Vehicule v)
 	{
-		return  places.contains(v);
+		return places.contains(v);
 	}
-	
-	public void park (Vehicule v) throws PlaceOccupeeException
+
+	public void park(Vehicule v) throws PlaceOccupeeException
 	{
-		for(Place place : places)
+		for (Place place : places)
 		{
-			if(place.isFree())
+			try
+			{
 				place.park(v);
 				return;
+			}
+			catch (PlaceOccupeeException poe)
+			{
+				if(place.isTransporteur())
+					System.out.println("TR");
+			}
 		}
+		System.out.println("BITTETWRTI");
 		throw new PlaceOccupeeException();
 	}
 
 	public void park(Vehicule v, int place) throws PlaceOccupeeException
 	{
-		if(places.get(place).isFree())
-			places.get(place).park(v);
-		else
-			throw new PlaceOccupeeException();
-			
+		park(v, places.get(place));
 	}
 
-	public Vehicule unpark(int place) throws PlaceLibreException
+	public void park(Vehicule v, Place place) throws PlaceOccupeeException
 	{
-		Vehicule v = places.get(place).getParkedVehicule();
-		if(v == null)
-			throw new PlaceLibreException();
-		places.get(place).liberer();
+		if (!place.isReserve(v.getImmatriculation()) && place.isFree()) place.park(v);
+		else throw new PlaceOccupeeException();
+	}
+
+	public Vehicule unpark(Place p) throws PlaceLibreException, PlaceOccupeeException
+	{
+		Vehicule v = p.getParkedVehicule();
+		if (v == null) throw new PlaceLibreException();
+		p.retirer();
+		reorganiserPlace();
 		return v;
 	}
-	
-	public void etatParking ()
+
+	public Vehicule unpark(int place) throws PlaceLibreException, PlaceOccupeeException
 	{
-		try {
+		return unpark(places.get(place));
+	}
+
+	public void etatParking()
+	{
+		try
+		{
 			LecteurFichierLangue lg = new LecteurFichierLangue(langue);
 			System.out.print(lg.getEtat() + " : \n [");
-			for (int i = 0 ; i < places.size() -1; ++i)
+			for (int i = 0; i < places.size() - 1; ++i)
 			{
 				System.out.print(lg.getPlaceNum() + " : " + i + " : ");
-				if (places.get(i).isFree())
-					System.out.print(lg.getLibre());
-				else
-					System.out.print(lg.getOccuppee());
-				if (places.get(i).isReserve())
-					System.out.println(lg.getReservee());
+				if (places.get(i).isFree()) System.out.print(lg.getLibre());
+				else System.out.print(lg.getOccuppee());
+				if (places.get(i).isReserve()) System.out.println(lg
+						.getReservee());
 			}
 			System.out.print("];");
-		
+
 		}
 		catch (FileNotFoundException e)
 		{
@@ -82,46 +110,57 @@ public class Parking
 		}
 	}
 
-	public Place bookPlace() throws PlusAucunePlaceException
+	public Place bookPlace(Vehicule v) throws PlusAucunePlaceException
 	{
-		for(Place place : places)
-			if(place.isFree())
+		for (Place place : places)
+			if (!place.isReserve() && place.isFree())
 			{
-				place.reserver();
+				place.reserver(v.immatriculation);
 				return place;
 			}
 		throw new PlusAucunePlaceException();
 	}
 
-	public Place bookPlace(int emplacement) throws PlusAucunePlaceException
+	public Place bookPlace(Vehicule v, int emplacement) throws PlusAucunePlaceException
 	{
-		if(!places.get(emplacement).isReserve() && places.get(emplacement).isFree())
-			return places.get(emplacement);
+		return bookPlace(v, places.get(emplacement));
+	}
+
+	public Place bookPlace(Vehicule v, Place p) throws PlusAucunePlaceException
+	{
+		if (!p.isReserve() && p.isFree())
+		{
+			p.reserver(v.getImmatriculation());
+			return p;
+		}
 		throw new PlusAucunePlaceException();
 	}
 
 	public void freePlace(int i) throws PlaceDisponibleException
 	{
-		if (!places.get(i).isReserve())
-			throw new PlaceDisponibleException();
-		else
-			places.get(i).liberer();	
+		freePlace(places.get(i));
 	}
-	
+
+	public void freePlace(Place p) throws PlaceDisponibleException
+	{
+		if (!p.isReserve()) throw new PlaceDisponibleException();
+		else p.liberer();
+	}
+
 	public int getLocation(String immat)
 	{
-		for (int i = 0 ; i < places.size() -1; ++i)
-			if(!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmatriculation() == immat)
-				return i;
+		for (int i = 0; i < places.size() - 1; ++i)
+			if (!(places.get(i).isFree())
+					&& places.get(i).getParkedVehicule().getImmatriculation() == immat) return i;
 		return -1;
 	}
-	
-	public Vehicule retirerVehicule(String immat)
+
+	public Vehicule retirerVehicule(String immat) throws PlaceOccupeeException
 	{
-		try 
+		try
 		{
-			for (int i = 0 ; i < places.size() -1; ++i)
-				if(!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmatriculation() == immat)
+			for (int i = 0; i < places.size() - 1; ++i)
+				if (!(places.get(i).isFree()) && places.get(i).getParkedVehicule().getImmatriculation() == immat)
 					return unpark(i);
 		}
 		catch (PlaceLibreException e)
@@ -130,15 +169,29 @@ public class Parking
 		}
 		return null;
 	}
-	
-	public void reorganiserPlace() throws PlaceLibreException, PlaceOccupeeException
+
+	protected void reorganiserPlace() throws PlaceLibreException, PlaceOccupeeException
 	{
-		for(int i = 0;i < places.size(); ++i)
+		Stack<Place> placesLibres = new Stack<Place>();
+		for (Place p : places.subList(0, Constante.nbPlaceParticulier))
+			if (!p.isTransporteur() && p.isFree()) placesLibres.push(p);
+		for (Place p : places.subList(Constante.nbPlaceParticulier,
+				Constante.nbPlaceParticulier + Constante.nbPlaceTranporteur))
+			if (!p.isFree() && !p.getParkedVehicule().isTransporteur()) park(
+					unpark(places.get(p.getNumero())), placesLibres.pop());
+	}
+	
+	public void observePlaces(List<? extends Observer> observer) throws PasAssezDObservateurException
+	{
+		if(observer.size() != places.size()) throw new PasAssezDObservateurException();
+		Iterator<Place> placeIt = places.iterator();
+		Iterator<? extends Observer> obsIt = observer.iterator();
+		while(placeIt.hasNext() && obsIt.hasNext())
 		{
-			if (places.get(i).isTransporteur() && !places.get(i).getParkedVehicule().isTransporteur())
-				for(int j = 0; j < places.size(); ++j)
-					if(!places.get(i).isTransporteur() && places.get(j).isFree())
-						park(unpark(i), j);
+			Place p = placeIt.next();
+			PlaceButton pb = (PlaceButton) obsIt.next();
+			pb.setPlace(p);
+			p.addObserver(pb);
 		}
 	}
 }
