@@ -28,7 +28,7 @@ public class SearchVehicule extends JDialog
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField immaT;
-	private String immat;
+	private String immatriculation;
 	/**
 	 * Launch the application.
 	 */
@@ -48,7 +48,7 @@ public class SearchVehicule extends JDialog
 	
 	public String getImmat()
 	{
-		return immat;
+		return immatriculation;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class SearchVehicule extends JDialog
 	 */
 	public SearchVehicule()
 	{
-		setBounds(100, 100, 289, 129);
+		setBounds(100, 100, 289, 126);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -87,7 +87,7 @@ public class SearchVehicule extends JDialog
 						}
 						try
 						{
-							immaT.getText();
+							immatriculation = immaT.getText();
 							setVisible(false);
 						}
 						catch (IllegalArgumentException e)
@@ -121,7 +121,7 @@ public class SearchVehicule extends JDialog
 
 	public boolean getValue()
 	{
-		return immat != null;
+		return immatriculation.length() != 0;
 	}
 
 }
