@@ -225,7 +225,12 @@ public class PlaceButton extends JButton implements java.util.Observer
 			c = Color.green;
 		setBorder(BorderFactory.createDashedBorder(c));
 		if(arg != null)
-			new FactureDialog((Vehicule) arg);
+		{
+			FactureDialog fd = new FactureDialog((Vehicule) arg);
+			fd.setModal(true);
+			fd.setVisible(true);
+
+		}
 		repaint();
 	}
 }

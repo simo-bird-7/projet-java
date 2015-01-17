@@ -48,21 +48,31 @@ public class FactureDialog extends JDialog
 	/**
 	 * Create the dialog.
 	 */
+	final JLabel lblcont;
 	public FactureDialog(parking.business.Vehicule arg)
 	{
-		Facture f = new Facture(arg);
+		this(new Facture(arg));
+	}
+
+	public FactureDialog(parking.business.Facture arg)
+	{
+		this();
+		System.out.println(arg);
+		lblcont.setText("<html>" + arg.toString().replace("\n", "<br>") + "</html>");		
+	}
+	
+	public FactureDialog()
+	{
 		setBounds(100, 100, 287, 207);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		final JLabel lblcont;
 		contentPanel.setLayout(null);
 		{
 			lblcont = new JLabel("[cont]");
 			lblcont.setBounds(12, 12, 255, 118);
 			lblcont.setMaximumSize(new Dimension(280, 200));
-//			lblcont.setText("<html></html>");
-			lblcont.setText("<html>" + f.toString().replace("\n", "<br>") + "</html>");
+			lblcont.setText("<html></html>");
 			contentPanel.add(lblcont);
 		}
 		{
@@ -75,6 +85,7 @@ public class FactureDialog extends JDialog
 				{
 					public void actionPerformed(ActionEvent arg0)
 					{
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -92,8 +103,6 @@ public class FactureDialog extends JDialog
 				buttonPane.add(cancelButton);
 			}
 		}
-		setModal(true);
-		setVisible(true);
 	}
 
 	public boolean getValue()

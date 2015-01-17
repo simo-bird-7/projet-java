@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JMenuBar;
@@ -16,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import parking.business.Constante;
+import parking.business.Facture;
 import parking.business.Parking;
 import parking.exception.PasAssezDObservateurException;
 import parking.exception.PlaceOccupeeException;
@@ -25,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class ParkingUI
 {
@@ -44,6 +50,7 @@ public class ParkingUI
 				{
 					ParkingUI window = new ParkingUI();
 					window.frame.setVisible(true);
+					
 				}
 				catch (Exception e)
 				{
@@ -83,6 +90,20 @@ public class ParkingUI
 		frame.setBounds(100, 100, 828, 491);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		frame.addWindowListener(new WindowAdapter()
+		{
+		    public void windowClosing(WindowEvent e)
+		    {
+		    	try
+				{
+					Facture.save();
+				}
+				catch (IOException e1)
+				{
+					e1.printStackTrace();
+				}
+		    }
+		});
 		JMenuBar menuBar = new JMenuBar();
 		frame.getContentPane().add(menuBar, BorderLayout.NORTH);
 
@@ -127,6 +148,18 @@ public class ParkingUI
 		});
 		mnActions.add(mntmAjouterUnVhicule);
 
+		mntmAjouterUnVhicule = new JMenuItem("Afficher les factures");
+		mntmAjouterUnVhicule.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				FacturesHist fd = new FacturesHist();
+				fd.setVisible(true);
+				fd.setModal(true);
+			}
+		});
+		mnActions.add(mntmAjouterUnVhicule);
+		
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));

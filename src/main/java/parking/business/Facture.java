@@ -20,6 +20,11 @@ public class Facture implements Serializable
 
 	Vehicule vehicule;
 
+	public static List<Facture> getFactures()
+	{
+		return factures;
+	}
+	
 	public Facture(Vehicule v)
 	{
 		vehicule = v;
@@ -62,7 +67,6 @@ public class Facture implements Serializable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		factures = oos.readObject();
 		return factures;
 	}
 	
