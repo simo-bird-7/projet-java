@@ -23,15 +23,12 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class AddVehicule extends JDialog
+public class SearchVehicule extends JDialog
 {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField immaT;
-	private JTextField modelT;
-	private JTextField marcT;
-	private JTextField propT;
-	private Vehicule vehicule;
+	private String immatriculation;
 	/**
 	 * Launch the application.
 	 */
@@ -39,7 +36,7 @@ public class AddVehicule extends JDialog
 	{
 		try
 		{
-			AddVehicule dialog = new AddVehicule();
+			SearchVehicule dialog = new SearchVehicule();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		}
@@ -49,21 +46,21 @@ public class AddVehicule extends JDialog
 		}
 	}
 	
-	public Vehicule getVehicule()
+	public String getImmat()
 	{
-		return vehicule;
+		return immatriculation;
 	}
 
 	/**
 	 * Create the dialog.
 	 */
-	public AddVehicule()
+	public SearchVehicule()
 	{
-		setBounds(100, 100, 287, 207);
+		setBounds(100, 100, 289, 126);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new GridLayout(5, 2, 0, 0));
+		contentPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		{
 			JLabel label = new JLabel("Immatriculation");
 			contentPanel.add(label);
@@ -72,44 +69,6 @@ public class AddVehicule extends JDialog
 			immaT = new JTextField();
 			contentPanel.add(immaT);
 			immaT.setColumns(10);
-		}
-		{
-			JLabel label = new JLabel("Modele");
-			contentPanel.add(label);
-		}
-		{
-			modelT = new JTextField();
-			contentPanel.add(modelT);
-			modelT.setColumns(10);
-		}
-		{
-			JLabel label = new JLabel("Marque");
-			contentPanel.add(label);
-		}
-		{
-			marcT = new JTextField();
-			contentPanel.add(marcT);
-			marcT.setColumns(10);
-		}
-		{
-			JLabel label = new JLabel("Propriétaire");
-			contentPanel.add(label);
-		}
-		{
-			propT = new JTextField();
-			contentPanel.add(propT);
-			propT.setColumns(10);
-		}
-		{
-			JLabel lblType = new JLabel("Type de véhicule");
-			contentPanel.add(lblType);
-		}
-		final JComboBox comboBox;
-		{
-			comboBox = new JComboBox();
-			comboBox.setModel(new DefaultComboBoxModel(new String[] { "Moto",
-					"Voiture", "Camion" }));
-			contentPanel.add(comboBox);
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -121,59 +80,22 @@ public class AddVehicule extends JDialog
 				{
 					public void actionPerformed(ActionEvent arg0)
 					{
-						if(immaT.getText().length() == 0	||
-						   modelT.getText().length() == 0	||
-						   marcT.getText().length() == 0	||
-						   propT.getText().length() == 0)
+						if(immaT.getText().length() == 0)
 						{
 							JOptionPane.showMessageDialog(null, "Touts les champs sont requis", "Erreur", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-						String cn = "parking.business." + (String)comboBox.getSelectedItem();
 						try
 						{
-							Constructor<?> constrictor = Class.forName(cn).getConstructor(String.class, String.class, String.class, String.class);
-							vehicule = (Vehicule) constrictor.newInstance(new Object[]
-									{
-										immaT.getText(),
-										modelT.getText(),
-										marcT.getText(),
-										propT.getText()
-									});
+							immatriculation = immaT.getText();
 							setVisible(false);
-						}
-						catch (InstantiationException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						catch (IllegalAccessException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
 						catch (IllegalArgumentException e)
 						{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						catch (InvocationTargetException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						catch (NoSuchMethodException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 						catch (SecurityException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-						catch (ClassNotFoundException e)
 					{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -199,7 +121,7 @@ public class AddVehicule extends JDialog
 
 	public boolean getValue()
 	{
-		return vehicule != null;
+		return immatriculation.length() != 0;
 	}
 
 }

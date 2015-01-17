@@ -135,6 +135,29 @@ public class ParkingUI
 			}
 		});
 		mnActions.add(mntmAjouterUnVhicule);
+		
+		JMenuItem mntmChercherUnVhicule = new JMenuItem("Chercher un véhicule");
+		mntmChercherUnVhicule.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				SearchVehicule sv = new SearchVehicule();
+				sv.setModal(true);
+				sv.setVisible(true);
+				if(!sv.getValue()) return;
+				int location = Parking.getInstance().getLocation(sv.getImmat());
+				if(location == -1)
+				{
+					JOptionPane.showMessageDialog(null, "Le vehicule recherché est introuvable", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Le vehicule se trouve à la place n°"+location, "Recherche", JOptionPane.INFORMATION_MESSAGE);
+				}
+				
+			}
+		});
+		mnActions.add(mntmChercherUnVhicule);
 
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);

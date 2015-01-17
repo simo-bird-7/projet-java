@@ -1,7 +1,6 @@
 package parking.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Observable;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -17,6 +15,7 @@ import javax.swing.JPopupMenu;
 
 import parking.business.Parking;
 import parking.business.Place;
+import parking.business.Vehicule;
 import parking.exception.PlaceDisponibleException;
 import parking.exception.PlaceLibreException;
 import parking.exception.PlaceOccupeeException;
@@ -63,7 +62,7 @@ public class PlaceButton extends JButton implements java.util.Observer
 	public PlaceButton()
 	{
 		numero = nbInstance++;
-		garerVehicule.setText("Garer une nouvelle voiture ici");
+		garerVehicule.setText("Garer un véhicule ici");
 		garerVehicule.addActionListener(new ActionListener()
 		{
 			@Override
@@ -85,7 +84,9 @@ public class PlaceButton extends JButton implements java.util.Observer
 				}
 			}
 		});
+		popup.add(garerVehicule);
 		
+		reserverPlace.setText("Réserver cette place");
 		reserverPlace.addActionListener(new ActionListener()
 		{
 			@Override
@@ -105,7 +106,9 @@ public class PlaceButton extends JButton implements java.util.Observer
 				}
 			}
 		});
+		popup.add(reserverPlace);
 
+		libererPlace.setText("Liberer cette place");
 		libererPlace.addActionListener(new ActionListener()
 		{
 			@Override
@@ -121,7 +124,9 @@ public class PlaceButton extends JButton implements java.util.Observer
 				}
 			}
 		});
+		popup.add(libererPlace);
 
+		retirerVehicule.setText("Retirer le véhicule garé");
 		retirerVehicule.addActionListener(new ActionListener()
 		{
 			@Override
@@ -141,14 +146,29 @@ public class PlaceButton extends JButton implements java.util.Observer
 				}
 			}
 		});
-
-		reserverPlace.setText("Réserver cette place");
-		libererPlace.setText("Liberer cette place");
-		retirerVehicule.setText("Retirer le véhicule garé");
-		popup.add(libererPlace);
-		popup.add(reserverPlace);
-		popup.add(garerVehicule);
 		popup.add(retirerVehicule);
+		
+		showInfo.setText("Informations sur le véhicule garé");
+		showInfo.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Vehicule v = place.getParkedVehicule();
+				if(v != null)
+				{
+					String info = "Type: "+v.getClass().getSimpleName()+"\nImmatriculation: "+v.getImmatriculation()+"\nModèle: "+v.getModele()+"\nMarque: "+v.getMarque()+"\nPropriétaire: "+v.getProprietaire();
+					JOptionPane.showMessageDialog(null, info, "Info véhicule", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Aucun véhicule garé à cette place.", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		popup.add(showInfo);
+		
 		this.addMouseListener(new MouseListener()
 		{
 

@@ -151,7 +151,7 @@ public class Parking
 	{
 		for (int i = 0; i < places.size() - 1; ++i)
 			if (!(places.get(i).isFree())
-					&& places.get(i).getParkedVehicule().getImmatriculation() == immat) return i;
+					&& places.get(i).getParkedVehicule().getImmatriculation().equals(immat)) return i;
 		return -1;
 	}
 
