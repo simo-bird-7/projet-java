@@ -7,8 +7,8 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
-
 import javax.swing.JLabel;
 
 import parking.business.Facture;
@@ -17,6 +17,9 @@ import parking.business.Voiture;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.print.PrinterException;
+
+import javax.swing.JTextField;
 
 public class FactureDialog extends JDialog
 {
@@ -48,7 +51,7 @@ public class FactureDialog extends JDialog
 	/**
 	 * Create the dialog.
 	 */
-	final JLabel lblcont;
+	final JTextArea lblcont;
 	public FactureDialog(parking.business.Vehicule arg)
 	{
 		this(new Facture(arg));
@@ -58,19 +61,21 @@ public class FactureDialog extends JDialog
 	{
 		this();
 		System.out.println(arg);
-		lblcont.setText("<html>" + arg.toString().replace("\n", "<br>") + "</html>");		
+		lblcont.setText(arg.toString());		
 	}
 	
 	public FactureDialog()
 	{
+		setResizable(false);
 		setBounds(100, 100, 287, 207);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
+		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
-			lblcont = new JLabel("[cont]");
-			lblcont.setBounds(12, 12, 255, 118);
+			lblcont = new JTextArea("[cont]");
+			lblcont.setWrapStyleWord(true);
+			lblcont.setTabSize(4);
 			lblcont.setMaximumSize(new Dimension(280, 200));
 			lblcont.setText("<html></html>");
 			contentPanel.add(lblcont);
@@ -93,10 +98,18 @@ public class FactureDialog extends JDialog
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Annuler");
+				JButton cancelButton = new JButton("Imprimer");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						dispose();
+						try
+						{
+							lblcont.print();
+							dispose();
+						}
+						catch (PrinterException e)
+						{
+							System.err.println(e.getLocalizedMessage());
+						}
 					}
 				});
 				cancelButton.setActionCommand("Cancel");

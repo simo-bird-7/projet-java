@@ -2,11 +2,13 @@ package parking.gui;
 
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -25,10 +27,18 @@ import parking.exception.PlaceOccupeeException;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.IOException;
 
 public class ParkingUI
 {
@@ -106,6 +116,42 @@ public class ParkingUI
 		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Imprimer");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0){
+				final BufferedImage img = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_BGR);
+				frame.paint(img.getGraphics());
+				PrinterJob pj = PrinterJob.getPrinterJob();
+				pj.setPrintable(new Printable()
+				{
+					@Override
+					public int print(Graphics arg0, PageFormat arg1, int arg2)
+							throws PrinterException
+					{
+		               if (arg2 != 0)
+		                    return NO_SUCH_PAGE;
+		               arg0.drawImage(img, 0, 0, img.getWidth(), img.getHeight(), null);
+		               return PAGE_EXISTS;
+					}
+					
+				});
+				try
+				{
+					pj.print();
+				}
+				catch (PrinterException e)
+				{
+					JOptionPane.showMessageDialog(frame, "Impression impossible, le fichier sera sauvegardé :\n" + e.getMessage());
+					try
+					{
+						ImageIO.write(img, "png", new File(randStr() + ".png"));
+					}
+					catch (IOException e1)
+					{
+						System.err.println("Couldn't save screenshot");
+					}
+				}
+			}
+		});
 		mnFichier.add(mntmNewMenuItem_1);
 		mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -195,5 +241,10 @@ public class ParkingUI
 			panel.add(jp);
 		}
 		frame.setLocationRelativeTo(null);
+	}
+
+	private static String randStr()
+	{
+		return "Crash_dmp_" + new Random().nextInt();
 	}
 }

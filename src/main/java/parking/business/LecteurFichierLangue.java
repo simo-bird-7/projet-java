@@ -18,18 +18,30 @@ public class LecteurFichierLangue
 	String occuppee;
 	String reservee;
 
-	public LecteurFichierLangue(String langue) throws IOException,
-			FileNotFoundException
+	public LecteurFichierLangue(String langue)
 	{
-		InputStream ips = new FileInputStream("assets/" + langue + ".txt");
-		InputStreamReader ipsr = new InputStreamReader(ips);
-		BufferedReader br = new BufferedReader(ipsr);
-		etat = br.readLine();
-		placeNum = br.readLine();
-		libre = br.readLine();
-		occuppee = br.readLine();
-		reservee = br.readLine();
-		br.close();
+		InputStream ips;
+		try
+		{
+			ips = new FileInputStream("assets/" + langue + ".txt");
+			InputStreamReader ipsr = new InputStreamReader(ips);
+			BufferedReader br = new BufferedReader(ipsr);
+			etat = br.readLine();
+			placeNum = br.readLine();
+			libre = br.readLine();
+			occuppee = br.readLine();
+			reservee = br.readLine();
+			br.close();
+			ips.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			ips = getClass().getResourceAsStream("/assets/" + langue+ ".txt");
+		}
+		catch (IOException e)
+		{
+			System.err.println("Erreur de lecture, enjoy");
+		}
 	}
 
 	public String getEtat()

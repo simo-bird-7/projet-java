@@ -8,12 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -64,12 +62,12 @@ public class PlaceButton extends JButton implements java.util.Observer
 		try
 		{
 			if(!loadedImages.containsKey(name))
-				loadedImages.put(name, ImageIO.read(new File("assets/" + name + ".png")));
+				loadedImages.put(name, ImageIO.read(loadedImages.getClass().getResourceAsStream("/assets/" + name + ".png")));
 			return loadedImages.get(name);
 		}
 		catch (IOException e)
 		{
-			System.err.println("Couldn't load image");
+			System.err.println("Couldn't load image :" + "/assets/" + name + ".png");
 		}
 		return null;
 	}

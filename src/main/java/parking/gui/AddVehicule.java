@@ -141,7 +141,6 @@ public class AddVehicule extends JDialog
 										marcT.getText(),
 										propT.getText()
 									});
-							System.out.println(vehicule);
 							setVisible(false);
 						}
 						catch (InstantiationException e)

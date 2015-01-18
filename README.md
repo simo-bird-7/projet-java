@@ -49,7 +49,7 @@ Quand vous avez fini, vous allez commit votre code.
 `git commit -m ["Description des modification apportées"]`
 `git push`
 Entrez votre mot de passe et votre code est sur votre fork.
-Ensuite allez sur github et appuyez sur le bouton vers, pour faire une "pull request" (PR)
+Ensuite allez sur github et appuyez sur le bouton vert, pour faire une "pull request" (PR)
 Une pull request est une demande a ce que votre code soit incorporé (merge) dans la base existante.
 
 L'avantage, c'est que on peut eviter que du code non-fonctionnel se retrouve dans le repo principal.
