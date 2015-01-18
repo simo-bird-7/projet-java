@@ -17,7 +17,7 @@
   <build>
 	<resources>
       <resource>
-		<directory>src/ressources</directory>
+		<directory>src/resources</directory>
       </resource>
 	</resources>
     <plugins>
