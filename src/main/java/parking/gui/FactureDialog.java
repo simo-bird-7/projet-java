@@ -9,7 +9,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 
 import parking.business.Facture;
 import parking.business.Vehicule;
@@ -18,8 +17,6 @@ import parking.business.Voiture;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.print.PrinterException;
-
-import javax.swing.JTextField;
 
 public class FactureDialog extends JDialog
 {

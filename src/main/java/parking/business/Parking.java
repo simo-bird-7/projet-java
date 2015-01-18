@@ -1,7 +1,5 @@
 package parking.business;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -127,29 +125,17 @@ public class Parking
 	 */
 	public void etatParking()
 	{
-		try
+		LecteurFichierLangue lg = new LecteurFichierLangue(langue);
+		System.out.print(lg.getEtat() + " : \n [");
+		for (int i = 0; i < places.size() - 1; ++i)
 		{
-			LecteurFichierLangue lg = new LecteurFichierLangue(langue);
-			System.out.print(lg.getEtat() + " : \n [");
-			for (int i = 0; i < places.size() - 1; ++i)
-			{
-				System.out.print(lg.getPlaceNum() + " : " + i + " : ");
-				if (places.get(i).isFree()) System.out.print(lg.getLibre());
-				else System.out.print(lg.getOccuppee());
-				if (places.get(i).isReserve()) System.out.println(lg
-						.getReservee());
-			}
-			System.out.print("];");
-
+			System.out.print(lg.getPlaceNum() + " : " + i + " : ");
+			if (places.get(i).isFree()) System.out.print(lg.getLibre());
+			else System.out.print(lg.getOccuppee());
+			if (places.get(i).isReserve()) System.out.println(lg
+					.getReservee());
 		}
-		catch (FileNotFoundException e)
-		{
-			System.out.println("Language File not Found");
-		}
-		catch (IOException e)
-		{
-			System.out.println("Language File w/ wrong structure");
-		}
+		System.out.print("];");
 	}
 
 	/**
