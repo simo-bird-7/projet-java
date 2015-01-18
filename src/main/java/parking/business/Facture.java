@@ -94,16 +94,23 @@ public class Facture implements Serializable
 	
 	/**
 	 * Sauvegarde toute les facture a enregistrer
-	 * @throws IOException
 	 */
-	public static void save() throws IOException
+	public static void save()
 	{
 		File dir = new File("factures");
 		if(!dir.exists())
 			dir.mkdir();
-		FileOutputStream fos = new FileOutputStream("factures/" + "factures.bin");
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(factures);
-		oos.close();
+		FileOutputStream fos;
+		try
+		{
+			fos = new FileOutputStream("factures/" + "factures.bin");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(factures);
+			oos.close();
+		}
+		catch (Exception e)
+		{
+			System.err.print("N'a pas pu sauvegarder les factures, enjoy.");
+		}
 	}
 }
