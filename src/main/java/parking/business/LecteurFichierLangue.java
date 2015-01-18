@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+/**
+ * Classe permettant de lire la représentation d'une chaine littérale a partir d'un fichier
+ */
 public class LecteurFichierLangue
 {
 	String etat;

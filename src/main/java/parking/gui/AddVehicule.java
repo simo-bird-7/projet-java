@@ -22,8 +22,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AddVehicule extends JDialog
 {
@@ -106,7 +104,7 @@ public class AddVehicule extends JDialog
 			JLabel lblType = new JLabel("Type de véhicule");
 			contentPanel.add(lblType);
 		}
-		final JComboBox comboBox;
+		final JComboBox<String> comboBox;
 		{
 			comboBox = new JComboBox<String>();
 
@@ -124,10 +122,10 @@ public class AddVehicule extends JDialog
 				{
 					public void actionPerformed(ActionEvent arg0)
 					{
-						if(immaT.getText().length() == 0	||
+						if(immaT .getText().length() == 0	||
 						   modelT.getText().length() == 0	||
-						   marcT.getText().length() == 0	||
-						   propT.getText().length() == 0)
+						   marcT .getText().length() == 0	||
+						   propT .getText().length() == 0)
 						{
 							JOptionPane.showMessageDialog(null, "Touts les champs sont requis", "Erreur", JOptionPane.ERROR_MESSAGE);
 							return;

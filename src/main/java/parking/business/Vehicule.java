@@ -2,6 +2,9 @@ package parking.business;
 
 import java.io.Serializable;
 
+/**
+ * Classe abstraite représentant un véhicule
+ */
 public abstract class Vehicule implements Serializable
 {
 	private static final long serialVersionUID = 6908533054919923910L;
@@ -18,6 +21,9 @@ public abstract class Vehicule implements Serializable
 		this.proprietaire = prop;
 	}
 
+	/**
+	 * @return true si le véhicule est de type transporteur
+	 */
 	public abstract boolean isTransporteur();
 
 	public String getImmatriculation()

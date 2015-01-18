@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Observable;
 
@@ -113,7 +112,6 @@ public class PlaceButton extends JButton implements java.util.Observer
 				catch (PlaceOccupeeException e)
 				{
 					JOptionPane.showMessageDialog(null, "Impossible de garer ce véhicule ici!", "Opération impossible", JOptionPane.ERROR_MESSAGE);
-					e.printStackTrace();
 				}
 			}
 		});

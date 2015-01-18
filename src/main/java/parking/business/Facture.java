@@ -10,9 +10,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe représentant le systeme de facturation
+ */
 public class Facture implements Serializable
 {
 	private static final long serialVersionUID = -9039700930999803534L;
+
 	private static int numFactures = 0;
 	private static List<Facture> factures = load();
 	private FeeStrategy tarif = Constante.tarif;
@@ -20,29 +24,47 @@ public class Facture implements Serializable
 
 	Vehicule vehicule;
 
+	/**
+	 * @return La liste de toutes les factures enregistrées
+	 */
 	public static List<Facture> getFactures()
 	{
 		return factures;
 	}
 	
+	/**
+	 * Génere une facture pour un véhicule donné
+	 * @param v
+	 */
 	public Facture(Vehicule v)
 	{
 		vehicule = v;
 		factures.add(this);
 	}
 	
-	public double getPrice()
+	/**
+	 * @return Le prix de stationnement Hors Taxe
+	 */
+	public double getHT()
 	{
 		return tarif.calculerCout(vehicule);
+	}
+
+	/**
+	 * @return Le prix de stationnement TTC
+	 */
+	public double getTTC()
+	{
+		return getHT() + getHT() * Constante.TVA / 100;
 	}
 	
 	public String toString()
 	{
-		return "Facture n" + numFacture + ":\n" + vehicule + "\nTarif calculé " + tarif.description() + "\n--------------------------------------------------\n" + getPrice();
+		return "Facture n" + numFacture + ":\n" + vehicule + "\nTarif calculé " + tarif.description() + "\n--------------------------------------------------\n" + getHT() + " HT; " + getTTC() + "TTC\n";
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<Facture> load()
+	private static List<Facture> load()
 	{
 		List<Facture> factures = new ArrayList<Facture>();
 		File fact = new File("factures/factures.bin");
@@ -70,6 +92,10 @@ public class Facture implements Serializable
 		return factures;
 	}
 	
+	/**
+	 * Sauvegarde toute les facture a enregistrer
+	 * @throws IOException
+	 */
 	public static void save() throws IOException
 	{
 		File dir = new File("factures");
