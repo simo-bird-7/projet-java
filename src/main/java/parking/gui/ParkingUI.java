@@ -165,10 +165,12 @@ public class ParkingUI
 						WindowEvent.WINDOW_CLOSING));
 			}
 		});
-		
+
 		JMenuItem menuItem = new JMenuItem("A propos");
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		menuItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
 				About a = new About();
 				a.setModal(true);
 				a.setLocationRelativeTo(null);
@@ -237,8 +239,9 @@ public class ParkingUI
 			public void actionPerformed(ActionEvent arg0)
 			{
 				FacturesHist fd = new FacturesHist();
-				fd.setVisible(true);
 				fd.setModal(true);
+				fd.setVisible(true);
+				fd.setModal(false);
 			}
 		});
 		mnActions.add(mntmAjouterUnVhicule);

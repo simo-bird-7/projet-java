@@ -85,7 +85,7 @@ public class FacturesHist extends JDialog
 						FactureDialog fd = new FactureDialog((Facture) list.getSelectedValue());
 						fd.setModal(true);
 						fd.setVisible(true);
-
+						fd.setModal(false);
 					}
 				}
 			});
